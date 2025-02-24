@@ -1,0 +1,123 @@
+:root {
+    --primary: #2A5C82;
+    --secondary: #F39C12;
+    --accent: #27AE60;
+    --text: #333333;
+    --background: #f8f9fa;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: var(--text);
+    background-color: var(--background);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.navbar {
+    background: var(--primary);
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    height: 40px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.hero {
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('assets/office-bg.jpg');
+    background-size: cover;
+    color: white;
+    padding: 8rem 0;
+    text-align: center;
+}
+
+.features {
+    padding: 4rem 0;
+}
+
+.feature-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.cta-button {
+    background: var(--secondary);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    margin: 1rem 0;
+    transition: background 0.3s ease;
+}
+
+.cta-button:hover {
+    background: #e67e22;
+}
+
+.contact-form {
+    max-width: 600px;
+    margin: 0 auto;
+    display: grid;
+    gap: 1rem;
+}
+
+.contact-form input, .contact-form select {
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+}
+
+footer {
+    background: var(--primary);
+    color: white;
+    padding: 3rem 0;
+    margin-top: 4rem;
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+    
+    .hamburger {
+        display: block;
+    }
+    
+    .features {
+        grid-template-columns: 1fr;
+    }
+}
