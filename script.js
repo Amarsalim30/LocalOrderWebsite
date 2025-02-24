@@ -39,25 +39,69 @@ async function submitForm(data) {
     }
 }
 
-// Smooth scroll
+// Enhanced Intersection Observer with staggered animations
+const observerOptions = {
+    threshold: 0.2,
+    rootMargin: '-50px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+            entry.target.style.transitionDelay = `${index * 150}ms`;
+            entry.target.classList.add('visible', 'animate__animated', 'animate__fadeInUp');
+        }
+    });
+}, observerOptions);
+
+// Observe all animated elements
+const animatedElements = document.querySelectorAll('.feature-card, .testimonial, .contact-form');
+animatedElements.forEach(el => observer.observe(el));
+
+// Smooth scroll with easing
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-            behavior: 'smooth'
-        });
-    });
-});
+        const target = document.querySelector(this.getAttribute('href'));
+        const startPosition = window.pageYOffset;
+        const targetPosition = target.getBoundingClientRect().top + startPosition;
+        const distance = targetPosition - startPosition;
+        const duration = 1000;
+        let start = null;
 
-// Intersection Observer for animations
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
+        function animation(currentTime) {
+            if (start === null) start = currentTime;
+            const timeElapsed = currentTime - start;
+            const progress = Math.min(timeElapsed / duration, 1);
+            const easeInOutCubic = progress < 0.5
+                ? 4 * progress * progress * progress
+                : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+            
+            window.scrollTo(0, startPosition + distance * easeInOutCubic);
+            if (timeElapsed < duration) requestAnimationFrame(animation);
         }
+
+        requestAnimationFrame(animation);
     });
 });
 
-document.querySelectorAll('.feature-card').forEach((card) => {
-    observer.observe(card);
+// Add pulse animation to icons
+document.querySelectorAll('.feature-card i').forEach(icon => {
+    icon.addEventListener('mouseover', function() {
+        this.classList.add('pulse');
+        setTimeout(() => this.classList.remove('pulse'), 1000);
+    });
+});
+
+// Smooth hover effect for buttons
+document.querySelectorAll('.cta-button').forEach(button => {
+    button.addEventListener('mouseover', function() {
+        this.style.transform = 'translateY(-2px)';
+        this.style.boxShadow = '0 6px 20px rgba(0,0,0,0.15)';
+    });
+    
+    button.addEventListener('mouseout', function() {
+        this.style.transform = 'translateY(0)';
+        this.style.boxShadow = '0 4px 15px rgba(0,0,0,0.1)';
+    });
 });
