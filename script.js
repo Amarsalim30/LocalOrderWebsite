@@ -31,19 +31,63 @@ navLinks.querySelectorAll('a').forEach(link => {
     });
 });
 
+// Notification System
+function showNotification(type, title, message) {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    
+    notification.innerHTML = `
+        <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+        <div class="notification-content">
+            <div class="notification-title">${title}</div>
+            <div class="notification-message">${message}</div>
+        </div>
+        <button class="notification-close">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="notification-progress">
+            <div class="notification-progress-bar"></div>
+        </div>
+    `;
+
+    document.body.appendChild(notification);
+    
+    // Trigger animation
+    setTimeout(() => notification.classList.add('show'), 10);
+
+    // Setup auto-close
+    const progressBar = notification.querySelector('.notification-progress-bar');
+    progressBar.style.width = '0%';
+
+    // Close button handler
+    notification.querySelector('.notification-close').addEventListener('click', () => {
+        closeNotification(notification);
+    });
+
+    // Auto close after 3 seconds
+    setTimeout(() => closeNotification(notification), 3000);
+}
+
+function closeNotification(notification) {
+    notification.classList.remove('show');
+    setTimeout(() => notification.remove(), 300);
+}
+
 // Form validation and submission
 document.getElementById('leadForm').addEventListener('submit', (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
     
-    // Basic validation
     if (!isValidPhone(data.phone)) {
-        alert('Please enter a valid phone number');
+        showNotification(
+            'error',
+            'Invalid Phone Number',
+            'Please enter a valid phone number'
+        );
         return;
     }
     
-    // Simulate API call
     submitForm(data);
 });
 
@@ -55,10 +99,18 @@ async function submitForm(data) {
     try {
         // Simulate API call
         await new Promise(resolve => setTimeout(resolve, 1000));
-        alert('Thank you! We will contact you shortly via WhatsApp');
+        showNotification(
+            'success',
+            'Form Submitted!',
+            'We will contact you shortly via WhatsApp'
+        );
         document.getElementById('leadForm').reset();
     } catch (error) {
-        alert('Sorry, there was an error. Please try again.');
+        showNotification(
+            'error',
+            'Submission Failed',
+            'Please try again later'
+        );
     }
 }
 
