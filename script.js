@@ -1,19 +1,43 @@
-// Mobile menu toggle
-document.querySelector('.hamburger').addEventListener('click', () => {
-    document.querySelector('.nav-links').classList.toggle('active');
+// Mobile menu toggle with accessibility
+const hamburger = document.querySelector('.hamburger');
+const navLinks = document.querySelector('.nav-links');
+
+hamburger.addEventListener('click', () => {
+    const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
+    hamburger.setAttribute('aria-expanded', !isExpanded);
+    navLinks.classList.toggle('active');
 });
 
-// Form submission
+// Form validation and submission
 document.getElementById('leadForm').addEventListener('submit', (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData);
+    
+    // Basic validation
+    if (!isValidPhone(data.phone)) {
+        alert('Please enter a valid phone number');
+        return;
+    }
     
     // Simulate API call
-    setTimeout(() => {
-        alert('Thank you! We will contact you shortly via WhatsApp');
-        e.target.reset();
-    }, 1000);
+    submitForm(data);
 });
+
+function isValidPhone(phone) {
+    return /^[0-9+\s-]{10,}$/.test(phone);
+}
+
+async function submitForm(data) {
+    try {
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        alert('Thank you! We will contact you shortly via WhatsApp');
+        document.getElementById('leadForm').reset();
+    } catch (error) {
+        alert('Sorry, there was an error. Please try again.');
+    }
+}
 
 // Smooth scroll
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {

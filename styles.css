@@ -108,6 +108,43 @@ footer {
     margin-top: 4rem;
 }
 
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: 2px solid var(--primary);
+    border-color: var(--primary);
+}
+
+/* Accessibility improvements */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/* Mobile menu improvements */
 @media (max-width: 768px) {
     .nav-links {
         display: none;
@@ -119,5 +156,16 @@ footer {
     
     .features {
         grid-template-columns: 1fr;
+    }
+
+    .nav-links.active {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--primary);
+        padding: 1rem;
     }
 }
