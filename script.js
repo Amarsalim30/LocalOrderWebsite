@@ -1,11 +1,34 @@
-// Mobile menu toggle with accessibility
+// Mobile menu toggle with animations
 const hamburger = document.querySelector('.hamburger');
 const navLinks = document.querySelector('.nav-links');
+const body = document.body;
 
 hamburger.addEventListener('click', () => {
     const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
     hamburger.setAttribute('aria-expanded', !isExpanded);
+    hamburger.classList.toggle('active');
     navLinks.classList.toggle('active');
+    body.style.overflow = isExpanded ? '' : 'hidden';
+});
+
+// Close mobile menu when clicking outside
+document.addEventListener('click', (e) => {
+    if (!hamburger.contains(e.target) && !navLinks.contains(e.target) && navLinks.classList.contains('active')) {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', 'false');
+        body.style.overflow = '';
+    }
+});
+
+// Close mobile menu when clicking nav links
+navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', 'false');
+        body.style.overflow = '';
+    });
 });
 
 // Form validation and submission
